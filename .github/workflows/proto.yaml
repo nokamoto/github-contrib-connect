@@ -1,13 +1,11 @@
 name: Protocol Buffers
-
 on:
   push:
     branches:
-    - main
+      - main
   pull_request:
     branches:
-    - main
-
+      - main
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -19,9 +17,5 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 20
-      - uses: actions/cache@v3
-        with:
-          path: ~/go/bin
-          key: ${{ runner.os }}-${{ hashFiles('**/Makefile') }}
       - run: make proto
       - run: git diff --exit-code

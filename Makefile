@@ -3,7 +3,7 @@ GODIRS ?= $(shell go list -f "{{.Dir}}" ./... | grep -v "/pkg/apis")
 NODEDIR = web/dashboard
 NODEBIN = $(NODEDIR)/node_modules/.bin
 
-all: proto test
+all: yaml proto test
 
 $(GOBIN)/gofumpt:
 	go install mvdan.cc/gofumpt@latest
@@ -25,6 +25,12 @@ $(NODEBIN)/protoc-gen-es:
 
 $(NODEBIN)/protoc-gen-connect-es:
 	cd $(NODEDIR) && npm install
+
+$(GOBIN)/yamlfmt:
+	go install github.com/google/yamlfmt/cmd/yamlfmt@latest
+
+yaml: $(GOBIN)/yamlfmt
+	yamlfmt .
 
 proto: $(GOBIN)/buf $(GOBIN)/protoc-gen-go $(GOBIN)/protoc-gen-connect-go $(NODEBIN)/protoc-gen-es $(NODEBIN)/protoc-gen-connect-es
 	buf format -w

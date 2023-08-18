@@ -6,7 +6,7 @@ $(GOBIN)/gofumpt:
 	go install mvdan.cc/gofumpt@latest
 
 $(GOBIN)/golangci-lint:
-	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.54.
+	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin latest
 
 test: $(GOBIN)/gofumpt $(GOBIN)/golangci-lint
 	gofumpt -l -w .

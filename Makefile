@@ -1,5 +1,7 @@
 GOBIN ?= $(shell go env GOPATH)/bin
 GODIRS ?= $(shell go list -f "{{.Dir}}" ./... | grep -v "/pkg/apis")
+NODEDIR = web/dashboard
+NODEBIN = $(NODEDIR)/node_modules/.bin
 
 all: proto test
 
@@ -18,7 +20,13 @@ $(GOBIN)/protoc-gen-go:
 $(GOBIN)/protoc-gen-connect-go:
 	go install connectrpc.com/connect/cmd/protoc-gen-connect-go@latest
 
-proto: $(GOBIN)/buf $(GOBIN)/protoc-gen-go $(GOBIN)/protoc-gen-connect-go
+$(NODEBIN)/protoc-gen-es:
+	cd $(NODEDIR) && npm install
+
+$(NODEBIN)/protoc-gen-connect-es:
+	cd $(NODEDIR) && npm install
+
+proto: $(GOBIN)/buf $(GOBIN)/protoc-gen-go $(GOBIN)/protoc-gen-connect-go $(NODEBIN)/protoc-gen-es $(NODEBIN)/protoc-gen-connect-es
 	buf format -w
 	buf generate --template build/buf.gen.yaml
 

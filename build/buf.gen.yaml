@@ -6,3 +6,11 @@ plugins:
   - plugin: connect-go
     out: pkg
     opt: paths=source_relative
+  - plugin: es
+    path: web/dashboard/node_modules/.bin/protoc-gen-es
+    out: web/dashboard/app/gen
+    opt: target=ts
+  - plugin: connect-es
+    path: web/dashboard/node_modules/.bin/protoc-gen-connect-es
+    out: web/dashboard/app/gen
+    opt: target=ts

@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/nokamoto/github-contrib-connect/pkg/apis";
+
+service Contribs {
+  rpc ListContribs(ListContribsRequest) returns (ListContribsResponse);
+}
+
+message Contrib {
+  string name = 1;
+  string user = 2;
+  google.protobuf.Timestamp date = 3;
+  string repository = 4;
+  oneof contrib_type {
+    string approve = 5;
+    string comment = 6;
+  }
+}
+
+message ListContribsRequest {
+  string repository = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+}
+
+message ListContribsResponse {
+  repeated Contrib contribs = 1;
+  string next_page_token = 2;
+}

@@ -2,6 +2,8 @@ package usecase
 
 import (
 	"context"
+	"fmt"
+	"log/slog"
 	"regexp"
 	"time"
 
@@ -13,34 +15,42 @@ import (
 
 type Repository struct {
 	github *infra.Github
+	logger *slog.Logger
 }
 
-type PullFilter func(*github.PullRequest) bool
+type PullFilter func(*github.PullRequest) string
 
-func match(f []PullFilter, pull *github.PullRequest) bool {
+func match(f []PullFilter, pull *github.PullRequest) []string {
+	var matches []string
 	for _, filter := range f {
-		if filter(pull) {
-			return true
+		if why := filter(pull); why != "" {
+			matches = append(matches, why)
 		}
 	}
-	return false
+	return matches
 }
 
 func AuthorPullFilter(re string) PullFilter {
-	return func(pull *github.PullRequest) bool {
-		return regexp.MustCompile(re).MatchString(pull.GetUser().GetLogin())
+	return func(pull *github.PullRequest) string {
+		if regexp.MustCompile(re).MatchString(pull.GetUser().GetLogin()) {
+			return fmt.Sprintf("author %s matches %s", pull.GetUser().GetLogin(), re)
+		}
+		return ""
 	}
 }
 
-func NewRepository(github *infra.Github) *Repository {
+func NewRepository(github *infra.Github, logger *slog.Logger) *Repository {
 	return &Repository{
 		github: github,
+		logger: logger,
 	}
 }
 
 func (r *Repository) List(ctx context.Context, org string, repos []string, since time.Time, filters ...PullFilter) ([]*apis.Repository, error) {
 	var repositories []*apis.Repository
 	for _, repo := range repos {
+		logger := r.logger.With(slog.String("org", org), slog.String("repo", repo))
+
 		repository := &apis.Repository{
 			Org:  org,
 			Name: repo,
@@ -51,8 +61,17 @@ func (r *Repository) List(ctx context.Context, org string, repos []string, since
 			return nil, err
 		}
 
+		logger.Debug("list pulls", slog.Int("pulls", len(pulls)))
+
 		for _, pull := range pulls {
-			if match(filters, pull) {
+			logger = logger.With(
+				slog.Int("number", pull.GetNumber()),
+				slog.String("author", pull.GetUser().GetLogin()),
+				slog.String("title", pull.GetTitle()),
+			)
+
+			if why := match(filters, pull); len(why) != 0 {
+				logger.Debug("skip pull request", slog.Any("why", why))
 				continue
 			}
 
@@ -67,6 +86,8 @@ func (r *Repository) List(ctx context.Context, org string, repos []string, since
 			if err != nil {
 				return nil, err
 			}
+
+			logger.Debug("list reviews", slog.Int("reviews", len(reviews)))
 
 			for _, review := range reviews {
 				pull.Reviews = append(pull.GetReviews(), &apis.Review{

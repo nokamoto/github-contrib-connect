@@ -20,12 +20,24 @@ func NewClient(token string, sleep time.Duration) *Github {
 	}
 }
 
+func NewEnterpriseClient(baseURL, token string, sleep time.Duration) (*Github, error) {
+	e, err := github.NewClient(nil).WithEnterpriseURLs(baseURL, baseURL)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create a github client: %s: %w", baseURL, err)
+	}
+	return &Github{
+		client: e.WithAuthToken(token),
+		sleep:  sleep,
+	}, nil
+}
+
 func (g *Github) ListRepositories(ctx context.Context, org string) ([]*github.Repository, error) {
 	opts := &github.RepositoryListByOrgOptions{
 		ListOptions: github.ListOptions{PerPage: 100},
 	}
 	var repositories []*github.Repository
 	for {
+		time.Sleep(g.sleep)
 		repos, res, err := g.client.Repositories.ListByOrg(ctx, org, opts)
 		if err != nil {
 			return nil, fmt.Errorf("failed to list repositories: %s: %w", org, err)
@@ -35,7 +47,6 @@ func (g *Github) ListRepositories(ctx context.Context, org string) ([]*github.Re
 			break
 		}
 		opts.Page = res.NextPage
-		time.Sleep(g.sleep)
 	}
 	return repositories, nil
 }
@@ -46,6 +57,7 @@ func (g *Github) ListPulls(ctx context.Context, owner, repo string, since time.T
 	}
 	var pulls []*github.PullRequest
 	for {
+		time.Sleep(g.sleep)
 		ps, res, err := g.client.PullRequests.List(ctx, owner, repo, opts)
 		if err != nil {
 			return nil, fmt.Errorf("failed to list pull requests: %s/%s: %w", owner, repo, err)
@@ -62,7 +74,6 @@ func (g *Github) ListPulls(ctx context.Context, owner, repo string, since time.T
 			break
 		}
 		opts.Page = res.NextPage
-		time.Sleep(g.sleep)
 	}
 	return pulls, nil
 }
@@ -71,6 +82,7 @@ func (g *Github) ListReviews(ctx context.Context, owner, repo string, number int
 	opts := &github.ListOptions{PerPage: 100}
 	var reviews []*github.PullRequestReview
 	for {
+		time.Sleep(g.sleep)
 		rs, res, err := g.client.PullRequests.ListReviews(ctx, owner, repo, number, opts)
 		if err != nil {
 			return nil, fmt.Errorf("failed to list pull request reviews: %s/%s#%d: %w", owner, repo, number, err)
@@ -80,27 +92,6 @@ func (g *Github) ListReviews(ctx context.Context, owner, repo string, number int
 			break
 		}
 		opts.Page = res.NextPage
-		time.Sleep(g.sleep)
 	}
 	return reviews, nil
-}
-
-func (g *Github) ListComments(ctx context.Context, owner, repo string, number int) ([]*github.PullRequestComment, error) {
-	opts := &github.PullRequestListCommentsOptions{
-		ListOptions: github.ListOptions{PerPage: 100},
-	}
-	var comments []*github.PullRequestComment
-	for {
-		cs, res, err := g.client.PullRequests.ListComments(ctx, owner, repo, number, opts)
-		if err != nil {
-			return nil, fmt.Errorf("failed to list pull request comments: %s/%s#%d: %w", owner, repo, number, err)
-		}
-		comments = append(comments, cs...)
-		if res.NextPage == 0 {
-			break
-		}
-		opts.Page = res.NextPage
-		time.Sleep(g.sleep)
-	}
-	return comments, nil
 }

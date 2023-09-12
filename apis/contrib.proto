@@ -4,25 +4,22 @@ import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/nokamoto/github-contrib-connect/pkg/apis";
 
-message Repository {
-  string org = 1;
-  string name = 2;
-}
-
-message Comment {
-  Repository repository = 1;
-  string user = 2;
-  google.protobuf.Timestamp created_at = 3;
-}
-
 message Review {
-  Repository repository = 1;
   string user = 2;
   google.protobuf.Timestamp created_at = 3;
   string state = 4;
 }
 
-message Contrib {
-  repeated Comment comments = 1;
-  repeated Review reviews = 2;
+message Pull {
+  int32 number = 1;
+  string user = 2;
+  google.protobuf.Timestamp created_at = 3;
+  string state = 4;
+  repeated Review reviews = 5;
+}
+
+message Repository {
+  string org = 1;
+  string name = 2;
+  repeated Pull pulls = 3;
 }

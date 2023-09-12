@@ -7,106 +7,9 @@ import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialM
 import { Message, proto3, Timestamp } from "@bufbuild/protobuf";
 
 /**
- * @generated from message Repository
- */
-export class Repository extends Message<Repository> {
-  /**
-   * @generated from field: string org = 1;
-   */
-  org = "";
-
-  /**
-   * @generated from field: string name = 2;
-   */
-  name = "";
-
-  constructor(data?: PartialMessage<Repository>) {
-    super();
-    proto3.util.initPartial(data, this);
-  }
-
-  static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "Repository";
-  static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "org", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-  ]);
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Repository {
-    return new Repository().fromBinary(bytes, options);
-  }
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Repository {
-    return new Repository().fromJson(jsonValue, options);
-  }
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Repository {
-    return new Repository().fromJsonString(jsonString, options);
-  }
-
-  static equals(a: Repository | PlainMessage<Repository> | undefined, b: Repository | PlainMessage<Repository> | undefined): boolean {
-    return proto3.util.equals(Repository, a, b);
-  }
-}
-
-/**
- * @generated from message Comment
- */
-export class Comment extends Message<Comment> {
-  /**
-   * @generated from field: Repository repository = 1;
-   */
-  repository?: Repository;
-
-  /**
-   * @generated from field: string user = 2;
-   */
-  user = "";
-
-  /**
-   * @generated from field: google.protobuf.Timestamp created_at = 3;
-   */
-  createdAt?: Timestamp;
-
-  constructor(data?: PartialMessage<Comment>) {
-    super();
-    proto3.util.initPartial(data, this);
-  }
-
-  static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "Comment";
-  static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "repository", kind: "message", T: Repository },
-    { no: 2, name: "user", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "created_at", kind: "message", T: Timestamp },
-  ]);
-
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Comment {
-    return new Comment().fromBinary(bytes, options);
-  }
-
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Comment {
-    return new Comment().fromJson(jsonValue, options);
-  }
-
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Comment {
-    return new Comment().fromJsonString(jsonString, options);
-  }
-
-  static equals(a: Comment | PlainMessage<Comment> | undefined, b: Comment | PlainMessage<Comment> | undefined): boolean {
-    return proto3.util.equals(Comment, a, b);
-  }
-}
-
-/**
  * @generated from message Review
  */
 export class Review extends Message<Review> {
-  /**
-   * @generated from field: Repository repository = 1;
-   */
-  repository?: Repository;
-
   /**
    * @generated from field: string user = 2;
    */
@@ -130,7 +33,6 @@ export class Review extends Message<Review> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "Review";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "repository", kind: "message", T: Repository },
     { no: 2, name: "user", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "created_at", kind: "message", T: Timestamp },
     { no: 4, name: "state", kind: "scalar", T: 9 /* ScalarType.STRING */ },
@@ -154,45 +56,112 @@ export class Review extends Message<Review> {
 }
 
 /**
- * @generated from message Contrib
+ * @generated from message Pull
  */
-export class Contrib extends Message<Contrib> {
+export class Pull extends Message<Pull> {
   /**
-   * @generated from field: repeated Comment comments = 1;
+   * @generated from field: int32 number = 1;
    */
-  comments: Comment[] = [];
+  number = 0;
 
   /**
-   * @generated from field: repeated Review reviews = 2;
+   * @generated from field: string user = 2;
+   */
+  user = "";
+
+  /**
+   * @generated from field: google.protobuf.Timestamp created_at = 3;
+   */
+  createdAt?: Timestamp;
+
+  /**
+   * @generated from field: string state = 4;
+   */
+  state = "";
+
+  /**
+   * @generated from field: repeated Review reviews = 5;
    */
   reviews: Review[] = [];
 
-  constructor(data?: PartialMessage<Contrib>) {
+  constructor(data?: PartialMessage<Pull>) {
     super();
     proto3.util.initPartial(data, this);
   }
 
   static readonly runtime: typeof proto3 = proto3;
-  static readonly typeName = "Contrib";
+  static readonly typeName = "Pull";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "comments", kind: "message", T: Comment, repeated: true },
-    { no: 2, name: "reviews", kind: "message", T: Review, repeated: true },
+    { no: 1, name: "number", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 2, name: "user", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "created_at", kind: "message", T: Timestamp },
+    { no: 4, name: "state", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "reviews", kind: "message", T: Review, repeated: true },
   ]);
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Contrib {
-    return new Contrib().fromBinary(bytes, options);
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Pull {
+    return new Pull().fromBinary(bytes, options);
   }
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Contrib {
-    return new Contrib().fromJson(jsonValue, options);
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Pull {
+    return new Pull().fromJson(jsonValue, options);
   }
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Contrib {
-    return new Contrib().fromJsonString(jsonString, options);
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Pull {
+    return new Pull().fromJsonString(jsonString, options);
   }
 
-  static equals(a: Contrib | PlainMessage<Contrib> | undefined, b: Contrib | PlainMessage<Contrib> | undefined): boolean {
-    return proto3.util.equals(Contrib, a, b);
+  static equals(a: Pull | PlainMessage<Pull> | undefined, b: Pull | PlainMessage<Pull> | undefined): boolean {
+    return proto3.util.equals(Pull, a, b);
+  }
+}
+
+/**
+ * @generated from message Repository
+ */
+export class Repository extends Message<Repository> {
+  /**
+   * @generated from field: string org = 1;
+   */
+  org = "";
+
+  /**
+   * @generated from field: string name = 2;
+   */
+  name = "";
+
+  /**
+   * @generated from field: repeated Pull pulls = 3;
+   */
+  pulls: Pull[] = [];
+
+  constructor(data?: PartialMessage<Repository>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "Repository";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "org", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "name", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "pulls", kind: "message", T: Pull, repeated: true },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Repository {
+    return new Repository().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Repository {
+    return new Repository().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Repository {
+    return new Repository().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: Repository | PlainMessage<Repository> | undefined, b: Repository | PlainMessage<Repository> | undefined): boolean {
+    return proto3.util.equals(Repository, a, b);
   }
 }
 

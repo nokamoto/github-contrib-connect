@@ -153,3 +153,46 @@ export class Review extends Message<Review> {
   }
 }
 
+/**
+ * @generated from message Contrib
+ */
+export class Contrib extends Message<Contrib> {
+  /**
+   * @generated from field: repeated Comment comments = 1;
+   */
+  comments: Comment[] = [];
+
+  /**
+   * @generated from field: repeated Review reviews = 2;
+   */
+  reviews: Review[] = [];
+
+  constructor(data?: PartialMessage<Contrib>) {
+    super();
+    proto3.util.initPartial(data, this);
+  }
+
+  static readonly runtime: typeof proto3 = proto3;
+  static readonly typeName = "Contrib";
+  static readonly fields: FieldList = proto3.util.newFieldList(() => [
+    { no: 1, name: "comments", kind: "message", T: Comment, repeated: true },
+    { no: 2, name: "reviews", kind: "message", T: Review, repeated: true },
+  ]);
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Contrib {
+    return new Contrib().fromBinary(bytes, options);
+  }
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Contrib {
+    return new Contrib().fromJson(jsonValue, options);
+  }
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Contrib {
+    return new Contrib().fromJsonString(jsonString, options);
+  }
+
+  static equals(a: Contrib | PlainMessage<Contrib> | undefined, b: Contrib | PlainMessage<Contrib> | undefined): boolean {
+    return proto3.util.equals(Contrib, a, b);
+  }
+}
+

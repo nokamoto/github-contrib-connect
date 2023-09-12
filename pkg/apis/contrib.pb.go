@@ -210,6 +210,61 @@ func (x *Review) GetState() string {
 	return ""
 }
 
+type Contrib struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Comments []*Comment `protobuf:"bytes,1,rep,name=comments,proto3" json:"comments,omitempty"`
+	Reviews  []*Review  `protobuf:"bytes,2,rep,name=reviews,proto3" json:"reviews,omitempty"`
+}
+
+func (x *Contrib) Reset() {
+	*x = Contrib{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_apis_contrib_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Contrib) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Contrib) ProtoMessage() {}
+
+func (x *Contrib) ProtoReflect() protoreflect.Message {
+	mi := &file_apis_contrib_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Contrib.ProtoReflect.Descriptor instead.
+func (*Contrib) Descriptor() ([]byte, []int) {
+	return file_apis_contrib_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *Contrib) GetComments() []*Comment {
+	if x != nil {
+		return x.Comments
+	}
+	return nil
+}
+
+func (x *Contrib) GetReviews() []*Review {
+	if x != nil {
+		return x.Reviews
+	}
+	return nil
+}
+
 var File_apis_contrib_proto protoreflect.FileDescriptor
 
 var file_apis_contrib_proto_rawDesc = []byte{
@@ -237,11 +292,17 @@ var file_apis_contrib_proto_rawDesc = []byte{
 	0x0b, 0x32, 0x1a, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
 	0x62, 0x75, 0x66, 0x2e, 0x54, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x52, 0x09, 0x63,
 	0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x41, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x73, 0x74, 0x61, 0x74,
-	0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x73, 0x74, 0x61, 0x74, 0x65, 0x42, 0x35,
-	0x5a, 0x33, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6e, 0x6f, 0x6b,
-	0x61, 0x6d, 0x6f, 0x74, 0x6f, 0x2f, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2d, 0x63, 0x6f, 0x6e,
-	0x74, 0x72, 0x69, 0x62, 0x2d, 0x63, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74, 0x2f, 0x70, 0x6b, 0x67,
-	0x2f, 0x61, 0x70, 0x69, 0x73, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x73, 0x74, 0x61, 0x74, 0x65, 0x22, 0x52,
+	0x0a, 0x07, 0x43, 0x6f, 0x6e, 0x74, 0x72, 0x69, 0x62, 0x12, 0x24, 0x0a, 0x08, 0x63, 0x6f, 0x6d,
+	0x6d, 0x65, 0x6e, 0x74, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x08, 0x2e, 0x43, 0x6f,
+	0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x52, 0x08, 0x63, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x73, 0x12,
+	0x21, 0x0a, 0x07, 0x72, 0x65, 0x76, 0x69, 0x65, 0x77, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b,
+	0x32, 0x07, 0x2e, 0x52, 0x65, 0x76, 0x69, 0x65, 0x77, 0x52, 0x07, 0x72, 0x65, 0x76, 0x69, 0x65,
+	0x77, 0x73, 0x42, 0x35, 0x5a, 0x33, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d,
+	0x2f, 0x6e, 0x6f, 0x6b, 0x61, 0x6d, 0x6f, 0x74, 0x6f, 0x2f, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62,
+	0x2d, 0x63, 0x6f, 0x6e, 0x74, 0x72, 0x69, 0x62, 0x2d, 0x63, 0x6f, 0x6e, 0x6e, 0x65, 0x63, 0x74,
+	0x2f, 0x70, 0x6b, 0x67, 0x2f, 0x61, 0x70, 0x69, 0x73, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x33,
 }
 
 var (
@@ -256,23 +317,26 @@ func file_apis_contrib_proto_rawDescGZIP() []byte {
 	return file_apis_contrib_proto_rawDescData
 }
 
-var file_apis_contrib_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_apis_contrib_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_apis_contrib_proto_goTypes = []interface{}{
 	(*Repository)(nil),            // 0: Repository
 	(*Comment)(nil),               // 1: Comment
 	(*Review)(nil),                // 2: Review
-	(*timestamppb.Timestamp)(nil), // 3: google.protobuf.Timestamp
+	(*Contrib)(nil),               // 3: Contrib
+	(*timestamppb.Timestamp)(nil), // 4: google.protobuf.Timestamp
 }
 var file_apis_contrib_proto_depIdxs = []int32{
 	0, // 0: Comment.repository:type_name -> Repository
-	3, // 1: Comment.created_at:type_name -> google.protobuf.Timestamp
+	4, // 1: Comment.created_at:type_name -> google.protobuf.Timestamp
 	0, // 2: Review.repository:type_name -> Repository
-	3, // 3: Review.created_at:type_name -> google.protobuf.Timestamp
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	4, // 3: Review.created_at:type_name -> google.protobuf.Timestamp
+	1, // 4: Contrib.comments:type_name -> Comment
+	2, // 5: Contrib.reviews:type_name -> Review
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_apis_contrib_proto_init() }
@@ -317,6 +381,18 @@ func file_apis_contrib_proto_init() {
 				return nil
 			}
 		}
+		file_apis_contrib_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Contrib); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -324,7 +400,7 @@ func file_apis_contrib_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_apis_contrib_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -2,10 +2,7 @@ module github.com/nokamoto/github-contrib-connect
 
 go 1.20
 
-require (
-	connectrpc.com/connect v1.11.0
-	google.golang.org/protobuf v1.31.0
-)
+require google.golang.org/protobuf v1.31.0
 
 require (
 	github.com/ProtonMail/go-crypto v0.0.0-20230217124315-7d5c6f04bbb8 // indirect

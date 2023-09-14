@@ -16,4 +16,4 @@ jobs:
           go-version-file: './go.mod'
       - run: make test
       - run: git diff --exit-code
-      - uses: codecov/codecov-action@v3
+      - uses: codecov/codecov-action@v4
